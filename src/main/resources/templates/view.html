@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>view</title>
+<!-- include libraries(jQuery, bootstrap) -->
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+<!--<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>-->
+    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+<!--<script src="/js/btnFunc.js"></script>-->
+
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <!-- navbar : 부트 스트랩에서 사용하는 네비게이션 바 -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                <!-- collapse : 메뉴 접고 펴기 -->
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">게시판 웹 사이트</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/">메인</a></li>
+                <li><a href="/bbsPage">게시판</a></li>
+                <li><span id="user" th:if="${userName}"></span>
+                    <a th:if="${userName}" href="/logout" class="btn btn-info active" role="button"><b>Logout</b></a>   <!-- 유저 네임이 모델속성으로 건너 왔으면 이게나오고 아니면 로그인 이 나옴-->
+                    <a th:unless ="${userName}" href="/oauth2/authorization/google" class="btn btn-success active" role="button"><b>Google Login</b></a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+  <div class="container">
+    <div class="row marketing">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              <a th:utext="${article.title}" href="#"></a> <span th:utext="${article.registerDate}" class="pull-right text-right"> </span>
+            </h3>
+          </div>
+          <div th:utext="${article.content}" class="panel-body"></div>
+
+<!--          <button class="primary-btn btn" id="modify"  th:onclick="|window.location.href='/article/update/${article.id}'|">수정하기</button>-->
+          <button class="primary-btn btn" id="modify"  th:onclick="|javascript:check_id();|">수정하기</button>
+<!--          <button class="primary-btn btn" id="delete" th:onclick= "|javascript:check_id();|">삭제</button>-->
+<!--          <button class="primary-btn btn" id="asdf" name="asdf">alert3</button>-->
+          <button class="primary-btn btn" id="goToMain" th:onclick="|window.location.href='/'|">메인</button>
+
+<!--            <button id = "btn_delete1" class="primary-btn btn" hidden th:onclick="|window.location.href='/article/delete/${article.id}'|">삭제</button>-->
+        </div>
+      </div>
+    </div>
+  </div>
+    <!--            꼼수-->
+    <input type="text" th:value ="${article.authorId}" id = "authorId" hidden>
+    <input type="text" th:value ="${userId}" id = "userId" hidden>
+    <input type="text" th:value ="${article.id}" id = "articleId" hidden>
+    <script type="text/javascript">
+<!--        function btn_delete(){-->
+<!--          var authorId = document.getElementById('authorId').value;-->
+<!--          var userId = document.getElementById('userId').value;-->
+<!--          if(confirm("delete?") == true){-->
+<!--                window.location.href='/article/update/'+authorId;-->
+<!--          } else {-->
+<!--             alert('cancel');-->
+<!--          }-->
+<!--        }-->
+
+        function check_id(){
+            var authorId = document.getElementById('authorId').value;
+            var userId = document.getElementById('userId').value;
+            var articleId = document.getElementById('articleId').value;
+            if(authorId == userId) {
+                window.location.href='/article/update/'+articleId;
+            }else {
+                    alert('작성자가 아님');
+            }
+        }
+
+<!--        function btn_(){-->
+<!--                var userId = document.getElementById('userId').value;-->
+<!--                alert("userId = "+ userId);-->
+
+<!--        }-->
+
+         $("#goToMain").click(function () {
+            window.location.href='/';
+         });
+
+    </script>
+</body>
+</html>

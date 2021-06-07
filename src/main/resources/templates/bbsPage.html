@@ -1,0 +1,97 @@
+<!DOCTYPE>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <meta name="viewport" content="width=device-width initial-scale=1">
+
+   <link rel="stylesheet" href="/css/bootstrap.css">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   <link rel="stylesheet" href="/css/custom.css">
+   <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+
+   <title> bbs </title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-default">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed"
+			data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+			aria-expanded="false">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/"> 게시판 웹 사이트</a>
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li><a href="/">메인</a></li>
+				<li class="active"><a href="/bbsPage">게시판</a></li>
+                <li><span id="user" th:if="${userName}"></span>
+                    <a th:if="${userName}" href="/logout" class="btn btn-info active" role="button"><b>Logout</b></a>   <!-- 유저 네임이 모델속성으로 건너 왔으면 이게나오고 아니면 로그인 이 나옴-->
+                    <input th:if="${userName}" id="userNameCheck" th:valie = "${userName}" hidden>
+                    <a th:unless ="${userName}" href="/oauth2/authorization/google" class="btn btn-success active" role="button"><b>Google Login</b></a>
+                </li>
+            </ul>
+
+        </div>
+</nav>
+
+<!--<h1>웹 에디터 서비스</h1>-->
+
+<br>
+<!-- 목록 출력 영역 -->
+
+
+    <div class="container">
+            <div class="row">
+<!--                <table class="table table-striped" style="text-align:enter; border : 1px solid #dddddd;">-->
+                <table class="table table-horizontal table-bordered">
+                    <thead> <!-- 테이블의 헤더 부분 -->
+                        <tr>
+                            <th style="background-color: #eeeeee; text-align:center;">번호</th>
+                            <th style="background-color: #eeeeee; text-align:center;">제목</th>
+                            <th style="background-color: #eeeeee; text-align:center;">작성자</th>
+                            <th style="background-color: #eeeeee; text-align:center;">작성일</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tbody">
+                        <tr th:each="article : ${articleList}">
+                            <td th:text="${article.id}" style="text-align:left">id</td>
+                            <td ><a th:href="'/article/'+${article.id}" th:text="${article.title}" style="text-align:left">title</a></td>
+                            <td th:text="${article.author}" style="text-align:left">author</td>
+                            <span id="date" th:if="${article.updateDate}"></span>
+                            <td th:if="${article.updateDate}" th:text="${#temporals.format(article.updateDate, 'yyyy-MM-dd HH:mm:dd')}"style="text-align:left">>updateDate</td>
+                            <td th:unless="${article.updateDate}" th:text="${#temporals.format(article.registerDate, 'yyyy-MM-dd HH:mm:dd')}"style="text-align:left">>updateDate</td>
+                        </tr>
+                    </tbody>
+                </table>
+                    <tr th:each="pageNumber : ${pageNumber}" style="text-align:right">
+                        <td><a role="button" class="btn btn-success btn-arrow-left" href="/prev/" >이전</a></td>
+                    <!--        페이지 넘버로 아예 보내자-->
+                        <td><a role="button" class="btn btn-success btn-arrow-left"  href="/next/" >다음</a></td>
+
+                        <td><button class="btn btn-danger" id="contentsRegister" >글 등록</button></td>
+                    </tr>
+                <!-- class="btn btn-success btn-arrow-left" -->
+            </div>
+    </div>
+
+    <script>
+         $("#contentsRegister").click(function () {
+         try {
+                var userName = document.getElementById('userNameCheck').value;
+                window.location.href='/index';
+
+          } catch (error) {
+                alert("login Please");
+          }
+         });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+</body>
+</html>
