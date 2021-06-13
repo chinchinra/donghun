@@ -32,10 +32,12 @@ public class ArticleController {
     @GetMapping("/{id}")
     public String getArticle(Model model, @PathVariable Long id , @LoginUser SessionUser user) {
         Article article = articleRepository.findById(id).get();
-        model.addAttribute("article", article);
-        model.addAttribute("userId", user.getId());
-        model.addAttribute("userName", user.getName());
 
+        model.addAttribute("article", article);
+        if (user != null) {
+            model.addAttribute("userName", user.getName());
+            model.addAttribute("userId", user.getId());
+        }
         return "/view";
     }
 
@@ -44,7 +46,6 @@ public class ArticleController {
         Article article = articleRepository.findById(id).get();
 
         model.addAttribute("article", article);
-
         model.addAttribute("userName", user.getName());
 
         return "/update";

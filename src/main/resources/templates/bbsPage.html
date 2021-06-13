@@ -30,12 +30,11 @@
 				<li><a href="/">메인</a></li>
 				<li class="active"><a href="/bbsPage">게시판</a></li>
                 <li><span id="user" th:if="${userName}"></span>
-                    <a th:if="${userName}" href="/logout" class="btn btn-info active" role="button"><b>Logout</b></a>   <!-- 유저 네임이 모델속성으로 건너 왔으면 이게나오고 아니면 로그인 이 나옴-->
-                    <input th:if="${userName}" id="userNameCheck" th:valie = "${userName}" hidden>
-                    <a th:unless ="${userName}" href="/oauth2/authorization/google" class="btn btn-success active" role="button"><b>Google Login</b></a>
+                    <a th:if="${userName}"  href="/logout" class="btn btn-danger" role="button" ><b>Logout</b></a>   <!-- 유저 네임이 모델속성으로 건너 왔으면 이게나오고 아니면 로그인 이 나옴-->
+                    <a th:unless ="${userName}" href="/oauth2/authorization/google" class="btn btn-success" role="button"><b>Google Login</b></a>
                 </li>
             </ul>
-
+            <input th:if="${userName}" id="userNameCheck" th:valie = "${userName}" hidden>
         </div>
 </nav>
 

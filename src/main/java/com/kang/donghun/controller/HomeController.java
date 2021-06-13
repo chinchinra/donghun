@@ -41,7 +41,6 @@ public class HomeController {
         if (user != null) {
             model.addAttribute("userName", user.getName()); }
 
-
         model.addAttribute("articleList", articleRepository.findAll(PageRequest.of(page.getPageNumber()-1,5)));
         model.addAttribute("pageNumber", page.getPageNumber());
 
